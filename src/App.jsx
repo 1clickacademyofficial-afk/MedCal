@@ -545,7 +545,7 @@ export default function App() {
   );
 
   useEffect(() => {
-    const media = window.matchMedia("(max-width: 1536px), (pointer: coarse)");
+    const media = window.matchMedia("(max-width: 1536px), (pointer: coarse), (hover: none)");
     const apply = () => setIsCompactDevice(media.matches);
     apply();
     media.addEventListener("change", apply);
@@ -633,27 +633,6 @@ export default function App() {
     raf = window.requestAnimationFrame(tick);
     return () => window.cancelAnimationFrame(raf);
   }, [isCompactDevice]);
-
-  useEffect(() => {
-    const panels = document.querySelectorAll(".parallax-panel");
-    if (panels.length === 0) return undefined;
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReduced) {
-      panels.forEach((el) => el.classList.add("in-view"));
-      return undefined;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) entry.target.classList.add("in-view");
-        });
-      },
-      { threshold: 0.16, rootMargin: "0px 0px -10% 0px" },
-    );
-    panels.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
 
   useEffect(() => {
     try {

@@ -1219,17 +1219,16 @@ body {
     box-shadow: 0 0 0 2px rgb(24 24 27 / 0.12);
   }
 
+  /* opacity เริ่มที่ 1 เสมอ — Samsung Android / แท็บเล็ตบางรุ่น IntersectionObserver ไม่ใส่ .in-view ทำให้การ์ดซ่อนทั้งหน้า */
   .parallax-panel {
     backdrop-filter: blur(1px);
     transition:
       transform var(--dur-normal) var(--ease-out-quart),
-      box-shadow var(--dur-normal) var(--ease-out-quart),
-      opacity 460ms var(--ease-out-quart),
-      filter 460ms var(--ease-out-quart);
+      box-shadow var(--dur-normal) var(--ease-out-quart);
     will-change: transform;
     transform: translateY(calc(var(--parallax-scroll-y) * -0.024));
-    opacity: 0;
-    filter: blur(2px);
+    opacity: 1;
+    filter: none;
     --tilt-x: 2.2deg;
     --tilt-y: 2.6deg;
     --field-shift-x: calc(var(--parallax-pointer-x) * 8px);
@@ -1259,11 +1258,6 @@ body {
     --tilt-x: 3.7deg;
     --tilt-y: 4.2deg;
     --layer-z: 8px;
-  }
-
-  .parallax-panel.in-view {
-    opacity: 1;
-    filter: blur(0);
   }
 
   .score-card-glow {
@@ -1385,7 +1379,8 @@ body {
  * โทนพื้นหลังสว่าง: จอ ≤1536px (แท็บเล็ตแนวนอน + โน้ตบุ๊กจอเล็ก) และอุปกรณ์สัมผัสทุกขนาด
  * เดิมพลาดเคสเมาส์บน Windows tablet / จอโปร่งกว่า 1366px จึงยังได้ soft-light + vignette เข้ม = เทาทั้งจอ
  */
-@media (max-width: 1536px), (pointer: coarse) {
+/* (hover: none) = อุปกรณ์สัมผัสรวม Android/แท็บเล็ต แม้ viewport กว้างหรือรายงาน pointer แปลก */
+@media (max-width: 1536px), (pointer: coarse), (hover: none) {
   body {
     background-color: #fafafa;
   }
