@@ -545,7 +545,9 @@ export default function App() {
   );
 
   useEffect(() => {
-    const media = window.matchMedia("(max-width: 1023px), (pointer: coarse)");
+    const media = window.matchMedia(
+      "(max-width: 1023px), (pointer: coarse), ((hover: none) and (max-width: 1366px))",
+    );
     const apply = () => setIsCompactDevice(media.matches);
     apply();
     media.addEventListener("change", apply);
@@ -1480,7 +1482,7 @@ export default function App() {
           </aside>
         </div>
 
-        <section className="mt-8 grid gap-3 lg:hidden">
+        <section className="mt-8 grid max-lg:mb-4 gap-3 2xl:hidden">
           <div className="score-card-glow bolder-score-card relative overflow-hidden rounded-2xl border border-white/20 bg-gradient-to-br from-indigo-950/95 via-zinc-900/95 to-emerald-950/95 p-4 text-white shadow-lg ring-1 ring-cyan-300/20">
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_15%,rgba(99,102,241,0.35),transparent_45%),radial-gradient(circle_at_88%_20%,rgba(16,185,129,0.28),transparent_46%)]" />
             <div className="relative">
@@ -1537,7 +1539,7 @@ export default function App() {
         </footer>
       </main>
 
-      <div className="hidden fixed bottom-5 left-5 z-40 lg:block sm:bottom-7 sm:left-7">
+      <div className="hidden fixed bottom-5 left-5 z-40 2xl:block sm:bottom-7 sm:left-7">
         <div className="relative w-[min(88vw,18rem)] overflow-hidden rounded-3xl border border-white/25 bg-gradient-to-br from-fuchsia-900/95 via-rose-900/95 to-amber-900/95 px-4 py-4 text-white shadow-[0_18px_50px_-18px_rgba(79,15,50,0.9)] ring-1 ring-rose-300/30 backdrop-blur sm:w-[18rem] sm:px-5 sm:py-5">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_16%_15%,rgba(244,114,182,0.36),transparent_44%),radial-gradient(circle_at_85%_20%,rgba(251,191,36,0.28),transparent_46%)]" />
           <div className="relative">
@@ -1566,7 +1568,7 @@ export default function App() {
         </div>
       </div>
 
-      <div className="pointer-events-none hidden fixed bottom-5 right-5 z-40 lg:block sm:bottom-7 sm:right-7">
+      <div className="pointer-events-none hidden fixed bottom-5 right-5 z-40 2xl:block sm:bottom-7 sm:right-7">
         <div className="score-card-glow bolder-score-card relative min-w-[18.5rem] overflow-hidden rounded-3xl border border-white/20 bg-gradient-to-br from-indigo-950/95 via-zinc-900/95 to-emerald-950/95 px-6 py-5 text-white shadow-[0_18px_50px_-18px_rgba(15,23,42,0.95)] ring-1 ring-cyan-300/20 backdrop-blur sm:min-w-[22.5rem] sm:px-7 sm:py-6">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_15%,rgba(99,102,241,0.35),transparent_45%),radial-gradient(circle_at_88%_20%,rgba(16,185,129,0.28),transparent_46%)]" />
           <div className="relative">

@@ -5,6 +5,11 @@
 }
 
 @layer base {
+  /* ไม่มี dark theme ในโปรเจกต์ — บอก UA ว่าหน้านี้เป็นโทนสว่าง (ลดการปรับอัตโนมัติบางกรณีเมื่อ OS เป็น dark) */
+  html {
+    color-scheme: light;
+  }
+
   :root {
     --font-sans: "Inter", "Noto Sans Thai", ui-sans-serif, system-ui, sans-serif;
     --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
@@ -1376,7 +1381,12 @@ body {
   }
 }
 
-@media (max-width: 1023px), (pointer: coarse) {
+/* แท็บเล็ตหน้ากว้าง (hover:none / pointer: coarse) + iPad แนวนอน — โทนสว่างและปิด parallax หนัก */
+@media (max-width: 1023px), (pointer: coarse), ((hover: none) and (max-width: 1366px)) {
+  body {
+    background-color: #fcfcfc;
+  }
+
   .parallax-particle-layer,
   .parallax-grain,
   .parallax-scanlines,
@@ -1388,15 +1398,59 @@ body {
     display: none;
   }
 
-  .parallax-shell::before,
+  /* โทนขาวใกล้เดสก์ท็อป — บนมือถือ overlay/soft-light กับ vignette สีเข้มมักออกเทา/muddy */
+  .parallax-bg {
+    background-color: #fcfcfc;
+  }
+
+  .parallax-vignette {
+    opacity: 0.72;
+    filter: none;
+    mix-blend-mode: normal;
+    background:
+      radial-gradient(circle at 12% 18%, rgb(255 255 255 / 0.72), transparent 44%),
+      radial-gradient(circle at 86% 24%, rgb(255 255 255 / 0.58), transparent 42%),
+      radial-gradient(circle at 50% 100%, rgb(252 252 253 / 0.78), transparent 50%) !important;
+  }
+
+  .parallax-shell::before {
+    animation: none;
+    background: conic-gradient(
+      from 120deg at 50% 50%,
+      rgb(220 38 38 / 0.045),
+      rgb(14 165 233 / 0.06),
+      rgb(16 185 129 / 0.045),
+      rgb(220 38 38 / 0.045)
+    );
+    mix-blend-mode: normal;
+    opacity: 0.52;
+  }
+
   .parallax-shell::after {
     animation: none;
-    opacity: 0.32;
+    background: radial-gradient(
+      circle at 50% 38%,
+      rgb(255 255 255 / 0.62),
+      rgb(255 255 255 / 0.18) 52%,
+      transparent 72%
+    );
+    mix-blend-mode: normal;
+    opacity: 0.88;
+  }
+
+  .parallax-spotlight {
+    background: radial-gradient(
+      circle at 50% 42%,
+      rgb(255 255 255 / 0.38),
+      rgb(255 255 255 / 0) 50%
+    );
+    mix-blend-mode: normal;
+    opacity: 0.92;
   }
 
   .parallax-orb {
-    opacity: 0.36;
-    filter: blur(8px);
+    opacity: 0.4;
+    filter: blur(10px) saturate(1.05);
   }
 
   .parallax-heartbeat > span {
@@ -1409,7 +1463,8 @@ body {
   }
 
   .parallax-grid {
-    opacity: 0.16;
+    opacity: 0.07;
+    filter: brightness(1.15);
   }
 
   .parallax-ecg-line::after,
@@ -1436,5 +1491,17 @@ body {
   .antigravity-ring {
     opacity: 0.2;
     animation-duration: 24s;
+  }
+
+  /*
+   * การ์ดมือถือ (คะแนน / แจ้งปัญหา) ไม่มีคลาส parallax-panel แต่ footer Our Mission มี —
+   * translateY จาก scroll ทำให้ footer เลื่อนขึ้นทางภาพทับการ์ด และ z-index ยังซ้อนทับ
+   *
+   * บนแท็บเล็ต IntersectionObserver + opacity:0 เริ่มต้น อาจทำให้การ์ดขาวไม่ปรากฏ จอเลยดำมิด
+   */
+  .parallax-panel {
+    transform: none !important;
+    opacity: 1 !important;
+    filter: none !important;
   }
 }
