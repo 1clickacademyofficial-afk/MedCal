@@ -1464,6 +1464,47 @@ export default function App() {
           </aside>
         </div>
 
+        <section className="mt-8 grid gap-3 lg:hidden">
+          <div className="score-card-glow bolder-score-card overflow-hidden rounded-2xl border border-white/20 bg-gradient-to-br from-indigo-950/95 via-zinc-900/95 to-emerald-950/95 p-4 text-white shadow-lg ring-1 ring-cyan-300/20">
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_15%,rgba(99,102,241,0.35),transparent_45%),radial-gradient(circle_at_88%_20%,rgba(16,185,129,0.28),transparent_46%)]" />
+            <div className="relative">
+              <p className="text-xs font-bold uppercase tracking-[0.14em] text-zinc-200/90">คะแนนรวมทั้งหมด</p>
+              <p
+                className={`mt-1 text-4xl font-black tabular-nums tracking-tight text-emerald-300 transition-[transform,filter] duration-200 ${scoreBump ? "animate-score-bump" : ""}`}
+                aria-live="polite"
+                role="status"
+              >
+                {composite.toFixed(4)}
+              </p>
+            </div>
+          </div>
+
+          <div className="overflow-hidden rounded-2xl border border-white/25 bg-gradient-to-br from-fuchsia-900/95 via-rose-900/95 to-amber-900/95 p-4 text-white shadow-lg ring-1 ring-rose-300/30">
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_16%_15%,rgba(244,114,182,0.36),transparent_44%),radial-gradient(circle_at_85%_20%,rgba(251,191,36,0.28),transparent_46%)]" />
+            <div className="relative">
+              <p className="text-[11px] font-black uppercase tracking-[0.12em] text-rose-100/95">หากพบเจอปัญหา</p>
+              <p className="mt-1 text-sm font-bold leading-snug text-white/95">แจ้งปัญหา หรือติดตามข่าวสารได้ที่</p>
+              <div className="mt-2 relative inline-flex items-center">
+                <img
+                  src={oneClickLogo}
+                  alt="Oneclickmath logo"
+                  className="pointer-events-none absolute -left-3 -top-2 z-10 h-10 w-auto drop-shadow-[0_8px_18px_rgba(79,15,50,0.38)]"
+                  loading="lazy"
+                />
+                <a
+                  href="https://www.instagram.com/oneclickmath/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-fuchsia-500 via-pink-500 to-amber-400 px-5 py-2.5 pl-12 text-sm font-black text-white shadow-lg shadow-fuchsia-500/25 ring-1 ring-white/50 transition hover:brightness-110"
+                >
+                  @oneclickmath
+                  <span aria-hidden="true">↗</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <footer className="parallax-panel parallax-tier-results relative z-20 mt-16 rounded-2xl border-t-4 border-indigo-200/80 bg-gradient-to-r from-indigo-50/70 via-white to-emerald-50/70 p-5 shadow-sm ring-1 ring-zinc-200/80 sm:mt-20 sm:p-7">
           <div className="mx-auto flex w-full max-w-4xl flex-col items-center text-center">
             <p className="text-[11px] font-black uppercase tracking-[0.2em] text-indigo-700/80 sm:text-xs">
@@ -1480,7 +1521,7 @@ export default function App() {
         </footer>
       </main>
 
-      <div className="fixed bottom-5 left-5 z-40 sm:bottom-7 sm:left-7">
+      <div className="hidden fixed bottom-5 left-5 z-40 lg:block sm:bottom-7 sm:left-7">
         <div className="w-[min(88vw,18rem)] overflow-hidden rounded-3xl border border-white/25 bg-gradient-to-br from-fuchsia-900/95 via-rose-900/95 to-amber-900/95 px-4 py-4 text-white shadow-[0_18px_50px_-18px_rgba(79,15,50,0.9)] ring-1 ring-rose-300/30 backdrop-blur sm:w-[18rem] sm:px-5 sm:py-5">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_16%_15%,rgba(244,114,182,0.36),transparent_44%),radial-gradient(circle_at_85%_20%,rgba(251,191,36,0.28),transparent_46%)]" />
           <div className="relative">
@@ -1509,7 +1550,7 @@ export default function App() {
         </div>
       </div>
 
-      <div className="pointer-events-none fixed bottom-5 right-5 z-40 sm:bottom-7 sm:right-7">
+      <div className="pointer-events-none hidden fixed bottom-5 right-5 z-40 lg:block sm:bottom-7 sm:right-7">
         <div className="score-card-glow bolder-score-card min-w-[18.5rem] overflow-hidden rounded-3xl border border-white/20 bg-gradient-to-br from-indigo-950/95 via-zinc-900/95 to-emerald-950/95 px-6 py-5 text-white shadow-[0_18px_50px_-18px_rgba(15,23,42,0.95)] ring-1 ring-cyan-300/20 backdrop-blur sm:min-w-[22.5rem] sm:px-7 sm:py-6">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_15%,rgba(99,102,241,0.35),transparent_45%),radial-gradient(circle_at_88%_20%,rgba(16,185,129,0.28),transparent_46%)]" />
           <div className="relative">
