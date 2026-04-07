@@ -521,14 +521,13 @@ export default function App() {
     ...DEFAULT_FILTER_OPTIONS.categories,
   ]);
   const [isProgramPickerOpen, setIsProgramPickerOpen] = useState(false);
-  const [overdriveLevel, setOverdriveLevel] = useState(1);
-  const [isCompactDevice, setIsCompactDevice] = useState(false);
   const [isResultsModalOpen, setIsResultsModalOpen] = useState(false);
   const [focusedResultId, setFocusedResultId] = useState(null);
   const [modalUniversityFilter, setModalUniversityFilter] = useState("all");
   const [modalFacultyFilter, setModalFacultyFilter] = useState("all");
   const [modalToneFilter, setModalToneFilter] = useState("all");
   const [hoveredWeightKey, setHoveredWeightKey] = useState(null);
+  const [isCompactDevice, setIsCompactDevice] = useState(false);
   const [parallaxScrollY, setParallaxScrollY] = useState(0);
   const [parallaxPointerX, setParallaxPointerX] = useState(0);
   const [parallaxPointerY, setParallaxPointerY] = useState(0);
@@ -546,7 +545,7 @@ export default function App() {
   );
 
   useEffect(() => {
-    const media = window.matchMedia("(max-width: 1023px)");
+    const media = window.matchMedia("(max-width: 1023px), (pointer: coarse)");
     const apply = () => setIsCompactDevice(media.matches);
     apply();
     media.addEventListener("change", apply);
@@ -613,14 +612,19 @@ export default function App() {
 
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("mousemove", onMove, { passive: true });
+    if (!isCompactDevice) {
+      window.addEventListener("mousemove", onMove, { passive: true });
+    }
     return () => {
       window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("mousemove", onMove);
+      if (!isCompactDevice) {
+        window.removeEventListener("mousemove", onMove);
+      }
     };
-  }, []);
+  }, [isCompactDevice]);
 
   useEffect(() => {
+    if (isCompactDevice) return undefined;
     let raf = 0;
     const tick = () => {
       setParallaxPointerSpeed((prev) => (prev < 0.01 ? 0 : prev * 0.92));
@@ -628,7 +632,7 @@ export default function App() {
     };
     raf = window.requestAnimationFrame(tick);
     return () => window.cancelAnimationFrame(raf);
-  }, []);
+  }, [isCompactDevice]);
 
   useEffect(() => {
     const panels = document.querySelectorAll(".parallax-panel");
@@ -840,7 +844,7 @@ export default function App() {
     vet: !hasTrackSelection || activeTracks.has("vet"),
     pharm: !hasTrackSelection || activeTracks.has("pharm"),
   };
-  const overdriveBoost = isCompactDevice ? 1 : overdriveLevel;
+  const overdriveBoost = 3;
 
   return (
     <div
@@ -956,30 +960,16 @@ export default function App() {
               <span className="title-med-badge mr-2 align-middle">+</span>
               คำนวณคะแนนรวม กสพท
             </h1>
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => setOverdriveLevel((v) => (v >= 3 ? 1 : v + 1))}
-                className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-[11px] font-black transition ${
-                  overdriveLevel > 1
-                    ? "border-fuchsia-400 bg-fuchsia-50 text-fuchsia-800 shadow-[0_0_0_1px_rgba(217,70,239,0.25)]"
-                    : "border-zinc-300 bg-white/90 text-zinc-700 hover:border-fuchsia-300 hover:text-fuchsia-700"
-                }`}
-                title="สลับความแรงพารัลแลกซ์"
-              >
-                {isCompactDevice ? `OVERDRIVE x${overdriveLevel} (AUTO SAFE)` : `OVERDRIVE x${overdriveLevel}`}
-              </button>
-              <a
-                href="https://cotmesadmission.com/pdf/9Uo9Bs9YP568Fy0Fy1Bi5F.pdf"
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-1 rounded-full border border-zinc-300 bg-white/90 px-3 py-1.5 text-[11px] font-bold text-zinc-700 transition-colors hover:border-cyan-400 hover:text-cyan-700"
-                title="เปิดเอกสารอ้างอิงจาก กสพท"
-              >
-                อ้างอิงจาก กสพท
-                <span aria-hidden="true">↗</span>
-              </a>
-            </div>
+            <a
+              href="https://cotmesadmission.com/pdf/9Uo9Bs9YP568Fy0Fy1Bi5F.pdf"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1 rounded-full border border-zinc-300 bg-white/90 px-3 py-1.5 text-[11px] font-bold text-zinc-700 transition-colors hover:border-cyan-400 hover:text-cyan-700"
+              title="เปิดเอกสารอ้างอิงจาก กสพท"
+            >
+              อ้างอิงจาก กสพท
+              <span aria-hidden="true">↗</span>
+            </a>
           </div>
           <p className="mt-3 max-w-3xl text-base leading-relaxed text-zinc-700">
             ระบบนี้ใช้ข้อมูลประกาศ กสพท โดยกรองได้ 5 มิติ:
@@ -1491,7 +1481,7 @@ export default function App() {
         </div>
 
         <section className="mt-8 grid gap-3 lg:hidden">
-          <div className="score-card-glow bolder-score-card overflow-hidden rounded-2xl border border-white/20 bg-gradient-to-br from-indigo-950/95 via-zinc-900/95 to-emerald-950/95 p-4 text-white shadow-lg ring-1 ring-cyan-300/20">
+          <div className="score-card-glow bolder-score-card relative overflow-hidden rounded-2xl border border-white/20 bg-gradient-to-br from-indigo-950/95 via-zinc-900/95 to-emerald-950/95 p-4 text-white shadow-lg ring-1 ring-cyan-300/20">
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_15%,rgba(99,102,241,0.35),transparent_45%),radial-gradient(circle_at_88%_20%,rgba(16,185,129,0.28),transparent_46%)]" />
             <div className="relative">
               <p className="text-xs font-bold uppercase tracking-[0.14em] text-zinc-200/90">คะแนนรวมทั้งหมด</p>
@@ -1505,7 +1495,7 @@ export default function App() {
             </div>
           </div>
 
-          <div className="overflow-hidden rounded-2xl border border-white/25 bg-gradient-to-br from-fuchsia-900/95 via-rose-900/95 to-amber-900/95 p-4 text-white shadow-lg ring-1 ring-rose-300/30">
+          <div className="relative overflow-hidden rounded-2xl border border-white/25 bg-gradient-to-br from-fuchsia-900/95 via-rose-900/95 to-amber-900/95 p-4 text-white shadow-lg ring-1 ring-rose-300/30">
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_16%_15%,rgba(244,114,182,0.36),transparent_44%),radial-gradient(circle_at_85%_20%,rgba(251,191,36,0.28),transparent_46%)]" />
             <div className="relative">
               <p className="text-[11px] font-black uppercase tracking-[0.12em] text-rose-100/95">หากพบเจอปัญหา</p>
@@ -1548,7 +1538,7 @@ export default function App() {
       </main>
 
       <div className="hidden fixed bottom-5 left-5 z-40 lg:block sm:bottom-7 sm:left-7">
-        <div className="w-[min(88vw,18rem)] overflow-hidden rounded-3xl border border-white/25 bg-gradient-to-br from-fuchsia-900/95 via-rose-900/95 to-amber-900/95 px-4 py-4 text-white shadow-[0_18px_50px_-18px_rgba(79,15,50,0.9)] ring-1 ring-rose-300/30 backdrop-blur sm:w-[18rem] sm:px-5 sm:py-5">
+        <div className="relative w-[min(88vw,18rem)] overflow-hidden rounded-3xl border border-white/25 bg-gradient-to-br from-fuchsia-900/95 via-rose-900/95 to-amber-900/95 px-4 py-4 text-white shadow-[0_18px_50px_-18px_rgba(79,15,50,0.9)] ring-1 ring-rose-300/30 backdrop-blur sm:w-[18rem] sm:px-5 sm:py-5">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_16%_15%,rgba(244,114,182,0.36),transparent_44%),radial-gradient(circle_at_85%_20%,rgba(251,191,36,0.28),transparent_46%)]" />
           <div className="relative">
             <p className="text-[11px] font-black uppercase tracking-[0.12em] text-rose-100/95">หากพบเจอปัญหา</p>
@@ -1577,7 +1567,7 @@ export default function App() {
       </div>
 
       <div className="pointer-events-none hidden fixed bottom-5 right-5 z-40 lg:block sm:bottom-7 sm:right-7">
-        <div className="score-card-glow bolder-score-card min-w-[18.5rem] overflow-hidden rounded-3xl border border-white/20 bg-gradient-to-br from-indigo-950/95 via-zinc-900/95 to-emerald-950/95 px-6 py-5 text-white shadow-[0_18px_50px_-18px_rgba(15,23,42,0.95)] ring-1 ring-cyan-300/20 backdrop-blur sm:min-w-[22.5rem] sm:px-7 sm:py-6">
+        <div className="score-card-glow bolder-score-card relative min-w-[18.5rem] overflow-hidden rounded-3xl border border-white/20 bg-gradient-to-br from-indigo-950/95 via-zinc-900/95 to-emerald-950/95 px-6 py-5 text-white shadow-[0_18px_50px_-18px_rgba(15,23,42,0.95)] ring-1 ring-cyan-300/20 backdrop-blur sm:min-w-[22.5rem] sm:px-7 sm:py-6">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_15%,rgba(99,102,241,0.35),transparent_45%),radial-gradient(circle_at_88%_20%,rgba(16,185,129,0.28),transparent_46%)]" />
           <div className="relative">
             <p className="text-base font-bold uppercase tracking-[0.16em] text-zinc-200/90 sm:text-lg">

@@ -1375,3 +1375,66 @@ body {
     filter: none;
   }
 }
+
+@media (max-width: 1023px), (pointer: coarse) {
+  .parallax-particle-layer,
+  .parallax-grain,
+  .parallax-scanlines,
+  .parallax-streak-a,
+  .parallax-streak-b,
+  .antigravity-shear-a,
+  .antigravity-shear-b,
+  .cursor-halo {
+    display: none;
+  }
+
+  .parallax-shell::before,
+  .parallax-shell::after {
+    animation: none;
+    opacity: 0.32;
+  }
+
+  .parallax-orb {
+    opacity: 0.36;
+    filter: blur(8px);
+  }
+
+  .parallax-heartbeat > span {
+    animation-duration: 5.2s;
+  }
+
+  .parallax-heartbeat > span:nth-child(2),
+  .parallax-heartbeat > span:nth-child(3) {
+    display: none;
+  }
+
+  .parallax-grid {
+    opacity: 0.16;
+  }
+
+  .parallax-ecg-line::after,
+  .parallax-ecg-line::before,
+  .parallax-ecg-wrap {
+    animation: none !important;
+  }
+
+  .parallax-ecg-wrap {
+    opacity: 0.14;
+  }
+
+  .parallax-ecg-line::before {
+    background-position:
+      0 0,
+      0 38px;
+  }
+
+  .health-glyph {
+    opacity: 0.52;
+    animation-duration: 18s;
+  }
+
+  .antigravity-ring {
+    opacity: 0.2;
+    animation-duration: 24s;
+  }
+}
