@@ -527,7 +527,11 @@ export default function App() {
   const [modalFacultyFilter, setModalFacultyFilter] = useState("all");
   const [modalToneFilter, setModalToneFilter] = useState("all");
   const [hoveredWeightKey, setHoveredWeightKey] = useState(null);
-  const [isCompactDevice, setIsCompactDevice] = useState(false);
+  const [isCompactDevice, setIsCompactDevice] = useState(() =>
+    typeof window !== "undefined"
+      ? window.matchMedia("(max-width: 1536px), (pointer: coarse), (hover: none)").matches
+      : false,
+  );
   const [parallaxScrollY, setParallaxScrollY] = useState(0);
   const [parallaxPointerX, setParallaxPointerX] = useState(0);
   const [parallaxPointerY, setParallaxPointerY] = useState(0);
@@ -846,7 +850,7 @@ export default function App() {
     vet: !hasTrackSelection || activeTracks.has("vet"),
     pharm: !hasTrackSelection || activeTracks.has("pharm"),
   };
-  const overdriveBoost = 3;
+  const overdriveBoost = isCompactDevice ? 1 : 3;
 
   return (
     <div
