@@ -1404,11 +1404,37 @@ html.force-light-ui .parallax-shell {
   background-color: #fafafa !important;
 }
 
+/*
+ * คืนชั้น ambient บนมือถือแบบปลอดภัย — ไม่ใช้ soft-light/overlay (เคยทำ Samsung จอดำ)
+ * เลเยอร์สวยหลักยังอยู่ใน .parallax-bg; อันนี้เติมโทนแบบเดสก์ท็อปเล็กน้อย
+ */
 html.force-light-ui .parallax-shell::before,
 html.force-light-ui .parallax-shell::after {
-  display: none !important;
-  opacity: 0 !important;
-  visibility: hidden !important;
+  display: block !important;
+  visibility: visible !important;
+  mix-blend-mode: normal !important;
+  animation: none !important;
+}
+
+html.force-light-ui .parallax-shell::before {
+  opacity: 0.4 !important;
+  background: conic-gradient(
+    from 120deg at 50% 50%,
+    rgb(220 38 38 / 0.07),
+    rgb(14 116 144 / 0.11),
+    rgb(16 185 129 / 0.08),
+    rgb(220 38 38 / 0.07)
+  ) !important;
+}
+
+html.force-light-ui .parallax-shell::after {
+  opacity: 0.58 !important;
+  background: radial-gradient(
+    circle at 50% 38%,
+    rgb(255 255 255 / 0.52),
+    rgb(255 255 255 / 0.14) 55%,
+    transparent 72%
+  ) !important;
 }
 
 html.force-light-ui .parallax-bg {
