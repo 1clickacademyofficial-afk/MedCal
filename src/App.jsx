@@ -521,6 +521,8 @@ export default function App() {
     ...DEFAULT_FILTER_OPTIONS.categories,
   ]);
   const [isProgramPickerOpen, setIsProgramPickerOpen] = useState(false);
+  const [overdriveLevel, setOverdriveLevel] = useState(1);
+  const [isCompactDevice, setIsCompactDevice] = useState(false);
   const [isResultsModalOpen, setIsResultsModalOpen] = useState(false);
   const [focusedResultId, setFocusedResultId] = useState(null);
   const [modalUniversityFilter, setModalUniversityFilter] = useState("all");
@@ -542,6 +544,14 @@ export default function App() {
     () => TPAT1_GROUP.parts.reduce((sum, { key }) => sum + clampScore(scores[key]), 0),
     [scores]
   );
+
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 1023px)");
+    const apply = () => setIsCompactDevice(media.matches);
+    apply();
+    media.addEventListener("change", apply);
+    return () => media.removeEventListener("change", apply);
+  }, []);
 
   useEffect(() => {
     if (compositeBaseline.current === null) {
@@ -830,6 +840,7 @@ export default function App() {
     vet: !hasTrackSelection || activeTracks.has("vet"),
     pharm: !hasTrackSelection || activeTracks.has("pharm"),
   };
+  const overdriveBoost = isCompactDevice ? 1 : overdriveLevel;
 
   return (
     <div
@@ -843,6 +854,7 @@ export default function App() {
         "--ecg-dur": `${ecgDurationSec.toFixed(2)}s`,
         "--score-pulse": scoreBump ? 1 : 0,
         "--score-intensity": `${scoreIntensity.toFixed(3)}`,
+        "--overdrive-boost": `${overdriveBoost}`,
       }}
     >
       <div className="overdrive-progress-beam" aria-hidden="true" />
@@ -944,16 +956,30 @@ export default function App() {
               <span className="title-med-badge mr-2 align-middle">+</span>
               คำนวณคะแนนรวม กสพท
             </h1>
-            <a
-              href="https://cotmesadmission.com/pdf/9Uo9Bs9YP568Fy0Fy1Bi5F.pdf"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-1 rounded-full border border-zinc-300 bg-white/90 px-3 py-1.5 text-[11px] font-bold text-zinc-700 transition-colors hover:border-cyan-400 hover:text-cyan-700"
-              title="เปิดเอกสารอ้างอิงจาก กสพท"
-            >
-              อ้างอิงจาก กสพท
-              <span aria-hidden="true">↗</span>
-            </a>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setOverdriveLevel((v) => (v >= 3 ? 1 : v + 1))}
+                className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-[11px] font-black transition ${
+                  overdriveLevel > 1
+                    ? "border-fuchsia-400 bg-fuchsia-50 text-fuchsia-800 shadow-[0_0_0_1px_rgba(217,70,239,0.25)]"
+                    : "border-zinc-300 bg-white/90 text-zinc-700 hover:border-fuchsia-300 hover:text-fuchsia-700"
+                }`}
+                title="สลับความแรงพารัลแลกซ์"
+              >
+                {isCompactDevice ? `OVERDRIVE x${overdriveLevel} (AUTO SAFE)` : `OVERDRIVE x${overdriveLevel}`}
+              </button>
+              <a
+                href="https://cotmesadmission.com/pdf/9Uo9Bs9YP568Fy0Fy1Bi5F.pdf"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-1 rounded-full border border-zinc-300 bg-white/90 px-3 py-1.5 text-[11px] font-bold text-zinc-700 transition-colors hover:border-cyan-400 hover:text-cyan-700"
+                title="เปิดเอกสารอ้างอิงจาก กสพท"
+              >
+                อ้างอิงจาก กสพท
+                <span aria-hidden="true">↗</span>
+              </a>
+            </div>
           </div>
           <p className="mt-3 max-w-3xl text-base leading-relaxed text-zinc-700">
             ระบบนี้ใช้ข้อมูลประกาศ กสพท โดยกรองได้ 5 มิติ:
