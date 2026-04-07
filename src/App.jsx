@@ -545,9 +545,7 @@ export default function App() {
   );
 
   useEffect(() => {
-    const media = window.matchMedia(
-      "(max-width: 1023px), (pointer: coarse), ((hover: none) and (max-width: 1366px))",
-    );
+    const media = window.matchMedia("(max-width: 1536px), (pointer: coarse)");
     const apply = () => setIsCompactDevice(media.matches);
     apply();
     media.addEventListener("change", apply);

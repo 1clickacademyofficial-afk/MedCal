@@ -1381,10 +1381,17 @@ body {
   }
 }
 
-/* แท็บเล็ตหน้ากว้าง (hover:none / pointer: coarse) + iPad แนวนอน — โทนสว่างและปิด parallax หนัก */
-@media (max-width: 1023px), (pointer: coarse), ((hover: none) and (max-width: 1366px)) {
+/*
+ * โทนพื้นหลังสว่าง: จอ ≤1536px (แท็บเล็ตแนวนอน + โน้ตบุ๊กจอเล็ก) และอุปกรณ์สัมผัสทุกขนาด
+ * เดิมพลาดเคสเมาส์บน Windows tablet / จอโปร่งกว่า 1366px จึงยังได้ soft-light + vignette เข้ม = เทาทั้งจอ
+ */
+@media (max-width: 1536px), (pointer: coarse) {
   body {
-    background-color: #fcfcfc;
+    background-color: #fafafa;
+  }
+
+  .parallax-shell {
+    background-color: #fafafa !important;
   }
 
   .parallax-particle-layer,
@@ -1398,59 +1405,60 @@ body {
     display: none;
   }
 
-  /* โทนขาวใกล้เดสก์ท็อป — บนมือถือ overlay/soft-light กับ vignette สีเข้มมักออกเทา/muddy */
   .parallax-bg {
-    background-color: #fcfcfc;
+    background-color: #fafafa;
   }
 
+  /* เลเยอร์โทนบาง — ซ้อนหลายชั้นบนแท็บเล็ตมักอ่านเป็นเทา */
   .parallax-vignette {
-    opacity: 0.72;
+    opacity: 0.45;
     filter: none;
     mix-blend-mode: normal;
     background:
-      radial-gradient(circle at 12% 18%, rgb(255 255 255 / 0.72), transparent 44%),
-      radial-gradient(circle at 86% 24%, rgb(255 255 255 / 0.58), transparent 42%),
-      radial-gradient(circle at 50% 100%, rgb(252 252 253 / 0.78), transparent 50%) !important;
+      radial-gradient(circle at 14% 20%, rgb(255 255 255 / 0.5), transparent 48%),
+      radial-gradient(circle at 84% 26%, rgb(255 255 255 / 0.42), transparent 46%),
+      radial-gradient(circle at 50% 100%, rgb(255 255 255 / 0.55), transparent 52%) !important;
   }
 
   .parallax-shell::before {
     animation: none;
     background: conic-gradient(
       from 120deg at 50% 50%,
-      rgb(220 38 38 / 0.045),
-      rgb(14 165 233 / 0.06),
-      rgb(16 185 129 / 0.045),
-      rgb(220 38 38 / 0.045)
+      rgb(220 38 38 / 0.028),
+      rgb(14 165 233 / 0.038),
+      rgb(16 185 129 / 0.028),
+      rgb(220 38 38 / 0.028)
     );
     mix-blend-mode: normal;
-    opacity: 0.52;
+    opacity: 0.28;
   }
 
   .parallax-shell::after {
     animation: none;
     background: radial-gradient(
-      circle at 50% 38%,
-      rgb(255 255 255 / 0.62),
-      rgb(255 255 255 / 0.18) 52%,
-      transparent 72%
+      circle at 48% 36%,
+      rgb(255 255 255 / 0.85),
+      rgb(255 255 255 / 0.35) 48%,
+      rgb(255 255 255 / 0.06) 70%,
+      transparent 78%
     );
     mix-blend-mode: normal;
-    opacity: 0.88;
+    opacity: 0.72;
   }
 
   .parallax-spotlight {
-    background: radial-gradient(
-      circle at 50% 42%,
-      rgb(255 255 255 / 0.38),
-      rgb(255 255 255 / 0) 50%
-    );
+    background: radial-gradient(circle at 50% 40%, rgb(255 255 255 / 0.55), rgb(255 255 255 / 0) 52%);
     mix-blend-mode: normal;
-    opacity: 0.92;
+    opacity: 0.65;
   }
 
   .parallax-orb {
-    opacity: 0.4;
-    filter: blur(10px) saturate(1.05);
+    opacity: 0.22;
+    filter: blur(12px) saturate(0.95);
+  }
+
+  .parallax-content::before {
+    display: none;
   }
 
   .parallax-heartbeat > span {
@@ -1463,8 +1471,8 @@ body {
   }
 
   .parallax-grid {
-    opacity: 0.07;
-    filter: brightness(1.15);
+    opacity: 0.04;
+    filter: brightness(1.2);
   }
 
   .parallax-ecg-line::after,
@@ -1474,7 +1482,7 @@ body {
   }
 
   .parallax-ecg-wrap {
-    opacity: 0.14;
+    opacity: 0.08;
   }
 
   .parallax-ecg-line::before {
