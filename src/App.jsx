@@ -552,6 +552,29 @@ export default function App() {
     return () => media.removeEventListener("change", apply);
   }, []);
 
+  /* Samsung / แท็บเล็ตบางเคสไม่เข้า media พร้อมกัน หรือ mix-blend ทำจอดำ — sync คลาสบน <html> แทน */
+  useEffect(() => {
+    const cls = "force-light-ui";
+    const sync = () => {
+      const touch = (navigator.maxTouchPoints ?? 0) > 0;
+      const coarse = window.matchMedia("(pointer: coarse)").matches;
+      const noHover = window.matchMedia("(hover: none)").matches;
+      const narrow = window.matchMedia("(max-width: 1536px)").matches;
+      document.documentElement.classList.toggle(cls, touch || coarse || noHover || narrow);
+    };
+    sync();
+    const mqs = ["(pointer: coarse)", "(hover: none)", "(max-width: 1536px)"].map((q) =>
+      window.matchMedia(q),
+    );
+    mqs.forEach((mq) => mq.addEventListener("change", sync));
+    window.addEventListener("resize", sync);
+    return () => {
+      mqs.forEach((mq) => mq.removeEventListener("change", sync));
+      window.removeEventListener("resize", sync);
+      document.documentElement.classList.remove(cls);
+    };
+  }, []);
+
   useEffect(() => {
     if (compositeBaseline.current === null) {
       compositeBaseline.current = composite;

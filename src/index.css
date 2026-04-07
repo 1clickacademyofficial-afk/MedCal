@@ -7,7 +7,7 @@
 @layer base {
   /* ไม่มี dark theme ในโปรเจกต์ — บอก UA ว่าหน้านี้เป็นโทนสว่าง (ลดการปรับอัตโนมัติบางกรณีเมื่อ OS เป็น dark) */
   html {
-    color-scheme: light;
+    color-scheme: light only;
   }
 
   :root {
@@ -1507,4 +1507,36 @@ body {
     opacity: 1 !important;
     filter: none !important;
   }
+}
+
+/*
+ * JS ใส่ html.force-light-ui เมื่อมีสัมผัส / หน้าจอแคบ — บังคับโทนสว่างและตัดเลเยอร์ blend
+ * แก้เคส Samsung (Chrome) ที่ composite mix-blend แล้วทั้งจอกลายเป็นดำทั้งที่ CSS media พอ
+ */
+html.force-light-ui {
+  color-scheme: light only;
+}
+
+html.force-light-ui body {
+  background-color: #fafafa !important;
+  color: #18181b !important;
+}
+
+html.force-light-ui .parallax-shell {
+  background-color: #fafafa !important;
+}
+
+html.force-light-ui .parallax-shell::before,
+html.force-light-ui .parallax-shell::after {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+html.force-light-ui .parallax-bg {
+  background-color: #fafafa !important;
+}
+
+html.force-light-ui .parallax-bg > * {
+  display: none !important;
 }
