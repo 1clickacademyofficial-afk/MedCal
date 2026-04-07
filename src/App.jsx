@@ -1255,7 +1255,7 @@ export default function App() {
                       {hint ? (
                         <p className="mb-2 text-[11px] leading-snug text-zinc-500">{hint}</p>
                       ) : null}
-                      <div className="flex items-center gap-1 sm:gap-1.5">
+                      <div className="flex items-center gap-2 sm:gap-3">
                         <input
                           type="range"
                           min={0}
@@ -1265,7 +1265,7 @@ export default function App() {
                           onChange={(e) =>
                             setScores((s) => ({ ...s, [key]: clampScore(e.target.value) }))
                           }
-                          className="h-1.5 min-w-[11rem] flex-1 cursor-pointer appearance-none rounded-full bg-zinc-200 sm:min-w-[14rem]"
+                          className="h-1.5 min-w-0 flex-1 cursor-pointer appearance-none rounded-full bg-zinc-200"
                           style={{
                             background: sliderBackground(clampScore(scores[key]), 100, key),
                           }}
